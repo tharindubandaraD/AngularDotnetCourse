@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DatingApp.API.Data;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
+namespace DatingApp.API
+{
+    //configurations injected into this cs
+    public class Startup
+    {
+        //allows to access if we want to these settings that are inside our configuration
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        //dependancy injection container
+        public void ConfigureServices(IServiceCollection services)
+        {
+
+            services.AddDbContext<DataContext>(x => x.UseSqlite
+            (Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllers();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            //this all are act like middle ware 
+            if (env.IsDevelopment())
+            {
+                //exception caught in here - global exception
+                app.UseDeveloperExceptionPage();
+            }
+
+            //app.UseHttpsRedirection();
+
+            //rooting in here 
+            app.UseRouting();
+
+            //authorizations in here 
+            app.UseAuthorization();
+
+            //map all controlles in here 
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
+}
