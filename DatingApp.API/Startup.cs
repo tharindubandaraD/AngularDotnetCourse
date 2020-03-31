@@ -51,6 +51,10 @@ namespace DatingApp.API
             //rooting in here 
             app.UseRouting();
 
+            //add cors as a service - no any securit in this piece of code. - then we can allow api values in angular application
+            //tell to trust this connection to browser
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            
             //authorizations in here 
             app.UseAuthorization();
 

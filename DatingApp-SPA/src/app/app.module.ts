@@ -1,17 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-//it should have decarate with this 
+import { ValueComponent } from './value/value.component';
+import { from } from 'rxjs';
+// it should have decarate with this
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [],
-  //AppComponent is bellow file
-  bootstrap: [AppComponent]
+   declarations: [
+      AppComponent,
+      ValueComponent
+   ],
+   imports: [
+      BrowserModule,
+      HttpClientModule
+   ],
+   providers: [],
+   bootstrap: [
+      AppComponent
+   ]
 })
 export class AppModule { }
+
+ // AppComponentisbellowfile

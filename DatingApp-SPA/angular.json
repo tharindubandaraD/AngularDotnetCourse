@@ -22,7 +22,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ],
+            ], // we can add addtional styles this is angular configuration if we add anything it will inject into index.html file
             "styles": [
               "src/styles.css"
             ],
