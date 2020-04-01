@@ -25,5 +25,11 @@ namespace DatingApp.API.Data
         //table name is here 
          public DbSet<Value>  Values { get; set; }
 
+        /*after we added new table like this need to run migration script next
+        -dotnet ef migrations add AddedUserEntity
+        -dotnet ef database update
+        */
+         public DbSet<User> Users { get;set; }
+
     }
 }

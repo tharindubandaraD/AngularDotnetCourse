@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Controllers
 {
-    //routing infromation in here 
+    //routing infromation in here - apicontroller is a validater then we use need a route
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
