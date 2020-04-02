@@ -19,8 +19,6 @@ namespace DatingApp.API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.0");
 
-<<<<<<< HEAD
-=======
             modelBuilder.Entity("DatingApp.API.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -41,7 +39,6 @@ namespace DatingApp.API.Migrations
                     b.ToTable("Users");
                 });
 
->>>>>>> 02-04-2020 Code Commit
             modelBuilder.Entity("DatingApp.API.Models.Value", b =>
                 {
                     b.Property<int>("Id")
