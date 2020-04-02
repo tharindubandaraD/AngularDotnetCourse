@@ -1,4 +1,9 @@
 .vscode
 bin
 obj
+<<<<<<< HEAD
 *.db
+=======
+*.db
+appsettings.json
+>>>>>>> 02-04-2020 Code Commit

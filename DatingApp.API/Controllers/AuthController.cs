@@ -9,7 +9,11 @@ using DatingApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 02-04-2020 Code Commit
 namespace DatingApp.API.Controllers
 {
     //apicontroller will says from where data is comming from so its normally allow null to empty strings.
@@ -61,15 +65,25 @@ namespace DatingApp.API.Controllers
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
             if (userFromRepo == null)
                 return Unauthorized();
+<<<<<<< HEAD
 
+=======
+            //buit a token to return to user it has id and Uname - store them in claims
+>>>>>>> 02-04-2020 Code Commit
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
                 new Claim(ClaimTypes.Name, userFromRepo.Username)
             };
+<<<<<<< HEAD
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
 
+=======
+            //store key 
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            
+>>>>>>> 02-04-2020 Code Commit
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor{
