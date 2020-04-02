@@ -5,99 +5,86 @@ using System.Text;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
-using DatingApp.API.Models;
+using DatingApp.API.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-<<<<<<< HEAD
 
-=======
-   
->>>>>>> 02-04-2020 Code Commit
 namespace DatingApp.API.Controllers
 {
-    //apicontroller will says from where data is comming from so its normally allow null to empty strings.
+
+    //31 episode    
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        //inject repo        
-        private readonly IAuthRepository _repo;
-        private readonly IConfiguration _config;
-        public AuthController(IAuthRepository repo, IConfiguration config)
+
+        //inject newly created repo : episode 31
+        private IAuthRepository _repo { get; }
+        //
+        private readonly IConfiguration _confg;
+        public AuthController(IAuthRepository repo, IConfiguration confg)
         {
-            _config = config;
+            this._confg = confg;
             _repo = repo;
         }
 
-        /*IActionResult is an interface, we can create a 
-       custom response as a return, when you use ActionResult 
-       you can return only predefined ones for returning a View or a resource
-       --ViewResult, PartialViewResult, JsonResult, etc., derive from ActionResult.
-       */
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
+        //we are using DTO to parse into register method 
+        public async Task<IActionResult> Register(UserForRegisterDtos userForRegisterDtos)
         {
-            //this not working because this will return User object as json serializable object so need to place a DTO
-            // validate the request - all we need to convert lowercase
+            //episode 31 - 
+            //validate request 
+            userForRegisterDtos.Username = userForRegisterDtos.Username.ToLower();
 
-            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
-            if (await _repo.UserExists(userForRegisterDto.Username))
-                return BadRequest("User Exsist");
+            if (await _repo.UserExists(userForRegisterDtos.Username))
+                return BadRequest("Username already exists");
 
-            //this will pass username
             var userToCreate = new User
             {
-                Username = userForRegisterDto.Username
+                Username = userForRegisterDtos.Username
             };
-            //this send the second password
-            var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
 
-            //tempory we return status code
+            var createUser = await _repo.Register(userToCreate, userForRegisterDtos.Password);
+
             return StatusCode(201);
-
 
         }
 
-        [HttpPost("login")] 
+        [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-            var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
-            if (userFromRepo == null)
+            var userFormRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
+
+            if (userFormRepo == null)
                 return Unauthorized();
-<<<<<<< HEAD
 
-=======
-            //buit a token to return to user it has id and Uname - store them in claims
->>>>>>> 02-04-2020 Code Commit
-            var claims = new[]
+            //to store token
+            var claims = new[]  
             {
-                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepo.Username)
+               new Claim(ClaimTypes.NameIdentifier , userFormRepo.Id.ToString()),
+               new Claim(ClaimTypes.Name , userFormRepo.Username)
             };
-<<<<<<< HEAD
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_confg.GetSection("AppSettings:Token").Value));
 
-=======
-            //store key 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
-            
->>>>>>> 02-04-2020 Code Commit
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor{
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = creds
             };
-
+            
             var tokenHandler = new JwtSecurityTokenHandler();
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return Ok(new {
                 token = tokenHandler.WriteToken(token)
             });
+
         }
 
 
