@@ -2,20 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-value',
-  templateUrl: './value.component.html',
-  styleUrls: ['./value.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-// use dependancy injection to use http client
-export class ValueComponent implements OnInit {
-  // this provides values what we getting from api - to use need to move to html page
-  values: any;
+export class HomeComponent implements OnInit {
+
+  registerMode = false;
+  values: any = {};
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.getValues();
   }
-
+  registerToggle() {
+      this.registerMode = !this.registerMode;
+  }
   getValues() {
     this.http.get('http://localhost:5000/api/values').subscribe(respose => {
       this.values = respose;
