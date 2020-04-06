@@ -22,11 +22,12 @@ export class NavComponent implements OnInit {
     });
   }
 
+  // simply check the local storage and set true false
   loggedIn() {
     const token = localStorage.getItem('token');
     return !!token;
   }
-
+ // token will store in local storage
   logout() {
     localStorage.removeItem('token');
     console.log('logged out');
