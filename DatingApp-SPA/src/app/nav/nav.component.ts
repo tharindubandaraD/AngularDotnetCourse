@@ -25,8 +25,13 @@ export class NavComponent implements OnInit {
 
   // simply check the local storage and set true false
   loggedIn() {
+    /*
+    // this token part need to move to service because this is type of service -this has authority
+    if we need to check status log in so we need to inject nav component
     const token = localStorage.getItem('token');
     return !!token;
+     */
+    return this.authService.loggedIn();
   }
  // token will store in local storage
   logout() {
