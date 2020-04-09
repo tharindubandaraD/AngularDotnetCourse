@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DatingApp.API.Migrations
 {
-    public partial class ExtendedUserClass : Migration
+    public partial class NewExtendedUser : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,12 @@ namespace DatingApp.API.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
+                name: "Created",
+                table: "Users",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<DateTime>(
                 name: "DateOfBirth",
                 table: "Users",
                 nullable: false,
@@ -29,7 +35,7 @@ namespace DatingApp.API.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Intersts",
+                name: "Interests",
                 table: "Users",
                 nullable: true);
 
@@ -97,6 +103,10 @@ namespace DatingApp.API.Migrations
                 table: "Users");
 
             migrationBuilder.DropColumn(
+                name: "Created",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
                 name: "DateOfBirth",
                 table: "Users");
 
@@ -105,7 +115,7 @@ namespace DatingApp.API.Migrations
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "Intersts",
+                name: "Interests",
                 table: "Users");
 
             migrationBuilder.DropColumn(

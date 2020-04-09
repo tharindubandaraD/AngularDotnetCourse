@@ -56,13 +56,16 @@ namespace DatingApp.API.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Gender")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Intersts")
+                    b.Property<string>("Interests")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Introduction")
@@ -108,7 +111,7 @@ namespace DatingApp.API.Migrations
             modelBuilder.Entity("DatingApp.API.Model.Photo", b =>
                 {
                     b.HasOne("DatingApp.API.Model.User", "User")
-                        .WithMany("Photes")
+                        .WithMany("Photos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

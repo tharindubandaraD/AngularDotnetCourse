@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DatingApp.API.Helpers;
+using AutoMapper;
 
 namespace DatingApp.API
 {
@@ -37,12 +38,17 @@ namespace DatingApp.API
             //rewrite by clipe 36
             services.AddDbContext<DataContext>(x=>x.UseSqlite
             (Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling = 
+                Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
             services.AddCors();
-            
+            services.AddAutoMapper(typeof(DatingRepository).Assembly);
             /* clip 30 - addscoped service is created onece for request : 
             within singlton : one instance for each web request not like singlton */
             services.AddScoped<IAuthRepository,AuthRepository>();
+            services.AddScoped<IDatingRepository,DatingRepository>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer( options => {
