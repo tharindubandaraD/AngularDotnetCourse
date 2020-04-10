@@ -4,11 +4,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Observer } from 'rxjs';
 import { User } from '../_models/user';
 
-// request headers - send header to server - set this part manually 
-// we can send token authomatically - this is for tem
+// request headers - send header to server - set this part manually
+// we can send token authomatically - this is for tem - same as postman
 const httpOptions = {
   headers: new HttpHeaders({
-    'Authorization': 'Bearer' + localStorage.getItem('token')
+    // tslint:disable-next-line: object-literal-key-quotes
+    'Authorization': 'Bearer ' + localStorage.getItem('token')
   })
 };
 
@@ -25,7 +26,7 @@ export class UserService {
   }
 
   getUser(id): Observable<User> {
-    return this.http.get<User>(this.baseUrl + 'user/' + id, httpOptions);
+    return this.http.get<User>(this.baseUrl + 'users/' + id, httpOptions);
   }
 
 }

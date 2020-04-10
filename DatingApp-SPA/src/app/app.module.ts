@@ -14,9 +14,10 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { ListsComponent } from './lists/lists.component';
-import { MemberListComponent } from './member-list/member-list.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { appRoutes } from './routes';
+import { MemberCardComponent } from './members/member-card/member-card.component';
 
 // it should have decarate with this
 @NgModule({
@@ -29,7 +30,8 @@ import { appRoutes } from './routes';
       RegisterComponent,
       ListsComponent,
       MemberListComponent,
-      MessagesComponent
+      MessagesComponent,
+      MemberCardComponent
    ],
    imports: [
       BrowserModule,
