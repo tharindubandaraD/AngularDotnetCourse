@@ -46,11 +46,14 @@ namespace DatingApp.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
         {
+            // check the id number is match with token id number and current user use a token and attemting to access put method
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            
+
+            // take a information from userfrom repor means current data 
             var userFromRepo = await _repo.GetUser(id);
 
+            // map data with update from uFUpdate to UFrepo
             _mapper.Map(userForUpdateDto, userFromRepo);
             
             if (await _repo.SaveAll())
