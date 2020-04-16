@@ -24,7 +24,8 @@ namespace DatingApp.API.Controllers
         private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
         private Cloudinary _cloudinary;
 
-        public PhotosController(IDatingRepository repo, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig)
+        public PhotosController(IDatingRepository repo, IMapper mapper,
+         IOptions<CloudinarySettings> cloudinaryConfig)
         {
             this._cloudinaryConfig = cloudinaryConfig;
             this._mapper = mapper;
@@ -54,7 +55,7 @@ namespace DatingApp.API.Controllers
         // PhotoForCreationDto what we going to send to api is different from photo class
         [HttpPost]
         public async Task<IActionResult> AddPhotoForUser(int userId, 
-        PhotoForCreationDto photoForCreationDto)
+        [FromForm]PhotoForCreationDto photoForCreationDto)
         {
               // check the id number is match with token id number and current user use a token and attemting to access put method
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -69,10 +70,13 @@ namespace DatingApp.API.Controllers
 
             if(file.Length > 0)
             {
-                using(var stream = file.OpenReadStream()){
-                    var uploadParams = new ImageUploadParams() {
+                using(var stream = file.OpenReadStream())
+                {
+                    var uploadParams = new ImageUploadParams() 
+                    {
                         File = new FileDescription(file.Name, stream),
-                        Transformation = new Transformation().Width(500).Height(500).Crop("fill").Gravity("face")
+                        Transformation = new Transformation()
+                        .Width(500).Height(500).Crop("fill").Gravity("face")
                     };
 
                     uploadResult = _cloudinary.Upload(uploadParams);
