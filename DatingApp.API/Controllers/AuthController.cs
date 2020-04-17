@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Model;
@@ -13,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace DatingApp.API.Controllers
 {
 
-    
+
     //31 episode    
     [Route("api/[controller]")]
     [ApiController]
@@ -24,9 +25,11 @@ namespace DatingApp.API.Controllers
         private IAuthRepository _repo { get; }
         //
         private readonly IConfiguration _confg;
-        public AuthController(IAuthRepository repo, IConfiguration confg)
+        private readonly IMapper _mapper;
+        public AuthController(IAuthRepository repo, IConfiguration confg, IMapper mapper)
         {
-            this._confg = confg;
+            _mapper = mapper;
+            _confg = confg;
             _repo = repo;
         }
 
@@ -61,7 +64,7 @@ namespace DatingApp.API.Controllers
                 return Unauthorized();
 
             //to store token
-            var claims = new[]  
+            var claims = new[]
             {
                new Claim(ClaimTypes.NameIdentifier , userFormRepo.Id.ToString()),
                new Claim(ClaimTypes.Name , userFormRepo.Username)
@@ -77,13 +80,17 @@ namespace DatingApp.API.Controllers
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = creds
             };
-            
+
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(new {
-                token = tokenHandler.WriteToken(token)
+            var user = _mapper.Map<UserForListDto>(userFormRepo);
+
+            return Ok(new
+            {
+                token = tokenHandler.WriteToken(token),
+                user
             });
 
         }
