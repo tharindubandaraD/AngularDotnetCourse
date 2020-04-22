@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, Observer } from 'rxjs';
 import { User } from '../_models/user';
+import { PaginationResult } from '../_models/Pagination';
+import { map } from 'rxjs/operators';
 
 // request headers - send header to server - set this part manually
 // we can send token authomatically - this is for tem - same as postman
@@ -21,8 +23,26 @@ export class UserService {
  baseUrl = environment.apiUrl;
  constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + 'users');
+  getUsers(page?, itemPerPage?): Observable<PaginationResult<User[]>> {
+
+    const paginationResult: PaginationResult<User[]> = new PaginationResult<User[]>();
+
+    let params = new HttpParams();
+
+    if (page != null && itemPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemPerPage);
+    }
+    return this.http.get<User[]>(this.baseUrl + 'users', {observe: 'response', params})
+    .pipe (
+      map( response => {
+        paginationResult.result = response.body;
+        if (response.headers.get('Pagination') != null) {
+          paginationResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginationResult;
+      })
+    );
   }
 
   getUser(id): Observable<User> {
