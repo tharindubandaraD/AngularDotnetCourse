@@ -5,6 +5,7 @@ import { Observable, Observer } from 'rxjs';
 import { User } from '../_models/user';
 import { PaginationResult } from '../_models/Pagination';
 import { map } from 'rxjs/operators';
+import { Message } from '../_models/message';
 
 // request headers - send header to server - set this part manually
 // we can send token authomatically - this is for tem - same as postman
@@ -81,5 +82,33 @@ export class UserService {
     return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
   }
 
+  getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
+    const paginationResult: PaginationResult<Message[]> = new PaginationResult<Message[]>();
+    let params = new HttpParams();
+
+    params = params.append('MessageContainer', messageContainer);
+
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages',
+    {observe: 'response', params})
+    .pipe(
+      map(response => {
+        paginationResult.result = response.body;
+        if ( response.headers.get('Pagination') != null) {
+          paginationResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginationResult;
+      })
+    );
+
+  }
+
+  getMessage(id: number, recipientId: number) {
+    return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId);
+  }
 
 }
