@@ -7,7 +7,9 @@ namespace DatingApp.API.Data
     {
         //27 th clip
          Task<User> Register(User user,string password);
+
          Task<User> Login(string username , string password);
+         
          Task<bool> UserExists(string username);            
          
      }
